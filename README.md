@@ -1,61 +1,192 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+ ### Fetch data from TMDB API using:
+   ```
+   php artisan tmdb:fetch
+   
+   ```
+### API Endpoints
+- **GET /api/movies**
+  - Retrieves a paginated list of movies
+  - Query Parameters:
+    - `language`: Language code (en, pl, de). Default: en
+    - `per_page`: Number of items per page. Default: 15
+    - `page`: Page number. Default: 1
+    - `genre`: Filter movies by genre ID
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+- **GET /api/movies/{id}**
+  - Retrieves detailed information for a specific movie
+  - Query Parameters:
+    - `language`: Language code (en, pl, de). Default: en
 
-## About Laravel
+- **GET /api/series**
+  - Retrieves a paginated list of TV series
+  - Query Parameters:
+    - `language`: Language code (en, pl, de). Default: en
+    - `per_page`: Number of items per page. Default: 15
+    - `page`: Page number. Default: 1
+    - `genre`: Filter series by genre ID
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **GET /api/series/{id}**
+  - Retrieves detailed information for a specific TV series
+  - Query Parameters:
+    - `language`: Language code (en, pl, de). Default: en
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **GET /api/genres**
+  - Retrieves a list of all genres
+  - Query Parameters:
+    - `language`: Language code (en, pl, de). Default: en
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **GET /api/genres/{id}**
+  - Retrieves information for a specific genre
+  - Query Parameters:
+    - `language`: Language code (en, pl, de). Default: en
 
-## Learning Laravel
+- **GET /api/genres/{id}/movies**
+  - Retrieves a paginated list of movies belonging to a specific genre
+  - Query Parameters:
+    - `language`: Language code (en, pl, de). Default: en
+    - `per_page`: Number of items per page. Default: 15
+    - `page`: Page number. Default: 1
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **GET /api/genres/{id}/series**
+  - Retrieves a paginated list of TV series belonging to a specific genre
+  - Query Parameters:
+    - `language`: Language code (en, pl, de). Default: en
+    - `per_page`: Number of items per page. Default: 15
+    - `page`: Page number. Default: 1
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Example Responses
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### GET /api/movies
 
-## Laravel Sponsors
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "tmdb_id": 123,
+      "title": "Movie Title",
+      "overview": "Movie overview text...",
+      "poster_path": "/path/to/poster.jpg",
+      "backdrop_path": "/path/to/backdrop.jpg",
+      "vote_average": 7.5,
+      "vote_count": 1200,
+      "release_date": "2023-01-15",
+      "genres": [
+        {
+          "id": 1,
+          "name": "Action"
+        },
+        {
+          "id": 2,
+          "name": "Drama"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 4,
+    "per_page": 15,
+    "total": 50
+  }
+}
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### GET /api/genres/{id}/movies
 
-### Premium Partners
+```json
+{
+  "data": [
+    {
+      "id": 5,
+      "tmdb_id": 456,
+      "title": "Horror Movie Title",
+      "overview": "Horror movie overview text...",
+      "poster_path": "/path/to/poster.jpg",
+      "backdrop_path": "/path/to/backdrop.jpg",
+      "vote_average": 6.8,
+      "vote_count": 950,
+      "release_date": "2022-10-31",
+      "genres": [
+        {
+          "id": 27,
+          "name": "Horror"
+        },
+        {
+          "id": 53,
+          "name": "Thriller"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 2,
+    "per_page": 15,
+    "total": 18
+  }
+}
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### GET /api/genres/{id}/series
 
-## Contributing
+```json
+{
+  "data": [
+    {
+      "id": 3,
+      "tmdb_id": 789,
+      "name": "Horror Series Title",
+      "overview": "Horror series overview text...",
+      "poster_path": "/path/to/poster.jpg",
+      "backdrop_path": "/path/to/backdrop.jpg",
+      "vote_average": 8.2,
+      "vote_count": 1500,
+      "first_air_date": "2020-09-15",
+      "genres": [
+        {
+          "id": 27,
+          "name": "Horror"
+        },
+        {
+          "id": 10765,
+          "name": "Sci-Fi & Fantasy"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 15,
+    "total": 5
+  }
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### GET api/genres?language=pl
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```json
+[
+  {
+    "id": 2,
+    "tmdb_id": 28,
+    "name": "Akcja"
+  },
+  {
+    "id": 3,
+    "tmdb_id": 12,
+    "name": "Przygodowy"
+  },
+  {
+    "id": 4,
+    "tmdb_id": 16,
+    "name": "Animacja"
+  },
+  {
+    "id": 5,
+    "tmdb_id": 35,
+    "name": "Komedia"
+  }
+]
+```
